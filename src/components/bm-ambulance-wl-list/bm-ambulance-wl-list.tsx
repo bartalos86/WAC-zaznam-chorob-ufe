@@ -1,7 +1,4 @@
 import { Component, Host, h } from '@stencil/core';
-import '@material/web/list/list'
-import '@material/web/list/list-item'
-import '@material/web/icon/icon'
 
 @Component({
   tag: 'bm-ambulance-wl-list',
@@ -37,7 +34,7 @@ export class BmAmbulanceWlList {
     ]);
   }
 
-  async componentWillLoad() {
+  public async componentWillLoad() {
     this.waitingPatients = await this.getWaitingPatientsAsync();
   }
 
