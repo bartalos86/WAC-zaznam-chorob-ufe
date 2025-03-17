@@ -1,4 +1,4 @@
-.openapi-generator-ignore
+apis/AmbulanceConditionsApi.ts
 apis/AmbulanceWaitingListApi.ts
 apis/index.ts
 index.ts

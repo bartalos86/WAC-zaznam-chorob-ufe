@@ -55,7 +55,7 @@ export class BmAmbulanceWlApp {
       <Host>
         { element === "editor"
         ? <bm-ambulance-wl-editor entry-id={entryId}
-            oneditor-closed={ () => navigate("./list")} >
+            oneditor-closed={ () => navigate("./list")} ambulance-id={this.ambulanceId} api-base={this.apiBase}>
           </bm-ambulance-wl-editor>
         : <bm-ambulance-wl-list ambulance-id={this.ambulanceId} api-base={this.apiBase}
          onentry-clicked={ (ev: CustomEvent<string>)=> navigate("./entry/" + ev.detail) } ></bm-ambulance-wl-list>
