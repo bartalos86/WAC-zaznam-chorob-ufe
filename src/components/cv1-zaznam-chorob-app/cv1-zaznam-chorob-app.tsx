@@ -52,18 +52,12 @@ export class BmAmbulanceWlApp {
     // }
 
     return (
-      <Host>
+      // <Host>
         <h1>Hello world - Projekt pre:
         Peter Bartoš, Márk Bartalos, Ľubor Koka</h1>
-        {/* { element === "editor"
-        ? <bm-ambulance-wl-editor entry-id={entryId}
-            oneditor-closed={ () => navigate("./list")} ambulance-id={this.ambulanceId} api-base={this.apiBase}>
-          </bm-ambulance-wl-editor>
-        : <bm-ambulance-wl-list ambulance-id={this.ambulanceId} api-base={this.apiBase}
-         onentry-clicked={ (ev: CustomEvent<string>)=> navigate("./entry/" + ev.detail) } ></bm-ambulance-wl-list>
-        } */}
 
-      </Host>
+
+      // </Host>
     );
   }
 }
