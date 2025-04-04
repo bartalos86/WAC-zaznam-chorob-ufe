@@ -1,4 +1,4 @@
-import { Component, Host, Prop, State, h } from '@stencil/core';
+import { Component, Prop, State, h } from '@stencil/core';
 
 declare global {
   interface Window { navigation: any; }
@@ -9,7 +9,7 @@ declare global {
   styleUrl: 'cv1-zaznam-chorob-app.css',
   shadow: true,
 })
-export class BmAmbulanceWlApp {
+export class Cv1ZaznamChorobApp {
   @State() private relativePath = "";
 
   @Prop() basePath: string="";
