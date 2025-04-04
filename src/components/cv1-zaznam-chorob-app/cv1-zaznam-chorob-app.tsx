@@ -54,7 +54,7 @@ export class BmAmbulanceWlApp {
     return (
       <Host>
         <h1>Hello world - Projekt pre:
-        Peter Bartoš, Bartalos Márk, Ľubor Koka</h1>
+        Peter Bartoš, Márk Bartalos, Ľubor Koka</h1>
         {/* { element === "editor"
         ? <bm-ambulance-wl-editor entry-id={entryId}
             oneditor-closed={ () => navigate("./list")} ambulance-id={this.ambulanceId} api-base={this.apiBase}>

@@ -36,7 +36,7 @@
     "mock-api": "open-api-mocker --schema .openapi.json --port 5001",
     "start:app": "stencil build --dev --watch --serve",
     "start:mock": "run-s convert-openapi mock-api",
-    "start": "run-p -r start:mock start:app",
+    "start": "run-p -r start:app",
     "openapi": "openapi-generator-cli generate",
     "build": "stencil build",
     "test": "stencil test --spec --e2e",
