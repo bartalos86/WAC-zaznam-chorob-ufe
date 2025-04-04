@@ -50,7 +50,7 @@ jobs:
       uses: docker/metadata-action@v3
       with:
         images: |
-          bartalos86/ambulance-ufe
+          bartalos86/zaznam-chorob-ufe
         tags: |
           type=schedule
           type=ref,event=branch
