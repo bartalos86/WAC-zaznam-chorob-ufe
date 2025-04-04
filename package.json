@@ -7,11 +7,11 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/ambulance/zaznam-chorob-ufe.esm.js",
+  "unpkg": "dist/zaznam-chorob-ufe/zaznam-chorob-ufe.esm.js",
   "exports": {
     ".": {
-      "import": "./dist/ambulance/zaznam-chorob-ufe.esm.js",
-      "require": "./dist/ambulance/zaznam-chorob-ufe.cjs.js"
+      "import": "./dist/zaznam-chorob-ufe/zaznam-chorob-ufe.esm.js",
+      "require": "./dist/zaznam-chorob-ufe/zaznam-chorob-ufe.cjs.js"
     },
     "./my-component": {
       "import": "./dist/components/my-component.js",
