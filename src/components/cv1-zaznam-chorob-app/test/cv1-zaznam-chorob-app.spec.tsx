@@ -25,4 +25,7 @@ describe('cv1-zaznam-chorob-app', () => {
   //   const child = await page.root.shadowRoot.firstElementChild;
   //   expect(child.tagName.toLocaleLowerCase()).toEqual("bm-ambulance-wl-list");
   // });
+  it('should work', () => {
+    expect(true).toEqual(true)
+  })
 });

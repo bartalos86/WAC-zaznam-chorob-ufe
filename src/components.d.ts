@@ -6,11 +6,6 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
-    interface BmAmbulanceWlApp {
-        "ambulanceId": string;
-        "apiBase": string;
-        "basePath": string;
-    }
     interface BmAmbulanceWlEditor {
         "ambulanceId": string;
         "apiBase": string;
@@ -19,6 +14,11 @@ export namespace Components {
     interface BmAmbulanceWlList {
         "ambulanceId": string;
         "apiBase": string;
+    }
+    interface Cv1ZaznamChorobApp {
+        "ambulanceId": string;
+        "apiBase": string;
+        "basePath": string;
     }
 }
 export interface BmAmbulanceWlEditorCustomEvent<T> extends CustomEvent<T> {
@@ -30,12 +30,6 @@ export interface BmAmbulanceWlListCustomEvent<T> extends CustomEvent<T> {
     target: HTMLBmAmbulanceWlListElement;
 }
 declare global {
-    interface HTMLBmAmbulanceWlAppElement extends Components.BmAmbulanceWlApp, HTMLStencilElement {
-    }
-    var HTMLBmAmbulanceWlAppElement: {
-        prototype: HTMLBmAmbulanceWlAppElement;
-        new (): HTMLBmAmbulanceWlAppElement;
-    };
     interface HTMLBmAmbulanceWlEditorElementEventMap {
         "editor-closed": string;
     }
@@ -70,18 +64,19 @@ declare global {
         prototype: HTMLBmAmbulanceWlListElement;
         new (): HTMLBmAmbulanceWlListElement;
     };
+    interface HTMLCv1ZaznamChorobAppElement extends Components.Cv1ZaznamChorobApp, HTMLStencilElement {
+    }
+    var HTMLCv1ZaznamChorobAppElement: {
+        prototype: HTMLCv1ZaznamChorobAppElement;
+        new (): HTMLCv1ZaznamChorobAppElement;
+    };
     interface HTMLElementTagNameMap {
-        "bm-ambulance-wl-app": HTMLBmAmbulanceWlAppElement;
         "bm-ambulance-wl-editor": HTMLBmAmbulanceWlEditorElement;
         "bm-ambulance-wl-list": HTMLBmAmbulanceWlListElement;
+        "cv1-zaznam-chorob-app": HTMLCv1ZaznamChorobAppElement;
     }
 }
 declare namespace LocalJSX {
-    interface BmAmbulanceWlApp {
-        "ambulanceId"?: string;
-        "apiBase"?: string;
-        "basePath"?: string;
-    }
     interface BmAmbulanceWlEditor {
         "ambulanceId"?: string;
         "apiBase"?: string;
@@ -93,19 +88,24 @@ declare namespace LocalJSX {
         "apiBase"?: string;
         "onEntry-clicked"?: (event: BmAmbulanceWlListCustomEvent<string>) => void;
     }
+    interface Cv1ZaznamChorobApp {
+        "ambulanceId"?: string;
+        "apiBase"?: string;
+        "basePath"?: string;
+    }
     interface IntrinsicElements {
-        "bm-ambulance-wl-app": BmAmbulanceWlApp;
         "bm-ambulance-wl-editor": BmAmbulanceWlEditor;
         "bm-ambulance-wl-list": BmAmbulanceWlList;
+        "cv1-zaznam-chorob-app": Cv1ZaznamChorobApp;
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "bm-ambulance-wl-app": LocalJSX.BmAmbulanceWlApp & JSXBase.HTMLAttributes<HTMLBmAmbulanceWlAppElement>;
             "bm-ambulance-wl-editor": LocalJSX.BmAmbulanceWlEditor & JSXBase.HTMLAttributes<HTMLBmAmbulanceWlEditorElement>;
             "bm-ambulance-wl-list": LocalJSX.BmAmbulanceWlList & JSXBase.HTMLAttributes<HTMLBmAmbulanceWlListElement>;
+            "cv1-zaznam-chorob-app": LocalJSX.Cv1ZaznamChorobApp & JSXBase.HTMLAttributes<HTMLCv1ZaznamChorobAppElement>;
         }
     }
 }

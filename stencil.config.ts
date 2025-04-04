@@ -2,7 +2,7 @@ import { Config } from '@stencil/core';
 
 export const config: Config = {
   globalScript: 'src/global/app.ts',
-  namespace: 'ambulance-ufe',
+  namespace: 'zaznam-chorob-ufe',
   outputTargets: [
     {
       type: 'dist',
