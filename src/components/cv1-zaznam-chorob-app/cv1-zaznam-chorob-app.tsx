@@ -1,4 +1,4 @@
-import { Component, Prop, State, h } from '@stencil/core';
+import { Component, Host, Prop, State, h } from '@stencil/core';
 
 declare global {
   interface Window { navigation: any; }
@@ -52,12 +52,10 @@ export class Cv1ZaznamChorobApp {
     // }
 
     return (
-      // <Host>
+      <Host>
         <h1>Hello world - Projekt pre:
         Peter Bartoš, Márk Bartalos, Ľubor Koka</h1>
-
-
-      // </Host>
+      </Host>
     );
   }
 }

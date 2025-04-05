@@ -13,5 +13,5 @@ import '@material/web/iconbutton/filled-icon-button.js'
 import { registerNavigationApi } from './navigation.js'
 
 export default function() {
-    registerNavigationApi()
+    // registerNavigationApi()
 }
