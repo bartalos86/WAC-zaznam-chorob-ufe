@@ -6,106 +6,142 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
-    interface BmAmbulanceWlEditor {
-        "ambulanceId": string;
-        "apiBase": string;
-        "entryId": string;
-    }
-    interface BmAmbulanceWlList {
-        "ambulanceId": string;
-        "apiBase": string;
-    }
     interface Cv1ZaznamChorobApp {
         "ambulanceId": string;
         "apiBase": string;
         "basePath": string;
     }
+    interface PatientApp {
+        "apiBase": string;
+        "basePath": string;
+    }
+    interface PatientList {
+    }
+    interface RandomPatient {
+    }
+    interface XkokaUsecase {
+    }
 }
-export interface BmAmbulanceWlEditorCustomEvent<T> extends CustomEvent<T> {
+export interface PatientListCustomEvent<T> extends CustomEvent<T> {
     detail: T;
-    target: HTMLBmAmbulanceWlEditorElement;
+    target: HTMLPatientListElement;
 }
-export interface BmAmbulanceWlListCustomEvent<T> extends CustomEvent<T> {
+export interface RandomPatientCustomEvent<T> extends CustomEvent<T> {
     detail: T;
-    target: HTMLBmAmbulanceWlListElement;
+    target: HTMLRandomPatientElement;
+}
+export interface XkokaUsecaseCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLXkokaUsecaseElement;
 }
 declare global {
-    interface HTMLBmAmbulanceWlEditorElementEventMap {
-        "editor-closed": string;
-    }
-    interface HTMLBmAmbulanceWlEditorElement extends Components.BmAmbulanceWlEditor, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLBmAmbulanceWlEditorElementEventMap>(type: K, listener: (this: HTMLBmAmbulanceWlEditorElement, ev: BmAmbulanceWlEditorCustomEvent<HTMLBmAmbulanceWlEditorElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLBmAmbulanceWlEditorElementEventMap>(type: K, listener: (this: HTMLBmAmbulanceWlEditorElement, ev: BmAmbulanceWlEditorCustomEvent<HTMLBmAmbulanceWlEditorElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLBmAmbulanceWlEditorElement: {
-        prototype: HTMLBmAmbulanceWlEditorElement;
-        new (): HTMLBmAmbulanceWlEditorElement;
-    };
-    interface HTMLBmAmbulanceWlListElementEventMap {
-        "entry-clicked": string;
-    }
-    interface HTMLBmAmbulanceWlListElement extends Components.BmAmbulanceWlList, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLBmAmbulanceWlListElementEventMap>(type: K, listener: (this: HTMLBmAmbulanceWlListElement, ev: BmAmbulanceWlListCustomEvent<HTMLBmAmbulanceWlListElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLBmAmbulanceWlListElementEventMap>(type: K, listener: (this: HTMLBmAmbulanceWlListElement, ev: BmAmbulanceWlListCustomEvent<HTMLBmAmbulanceWlListElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLBmAmbulanceWlListElement: {
-        prototype: HTMLBmAmbulanceWlListElement;
-        new (): HTMLBmAmbulanceWlListElement;
-    };
     interface HTMLCv1ZaznamChorobAppElement extends Components.Cv1ZaznamChorobApp, HTMLStencilElement {
     }
     var HTMLCv1ZaznamChorobAppElement: {
         prototype: HTMLCv1ZaznamChorobAppElement;
         new (): HTMLCv1ZaznamChorobAppElement;
     };
+    interface HTMLPatientAppElement extends Components.PatientApp, HTMLStencilElement {
+    }
+    var HTMLPatientAppElement: {
+        prototype: HTMLPatientAppElement;
+        new (): HTMLPatientAppElement;
+    };
+    interface HTMLPatientListElementEventMap {
+        "entry-clicked": string;
+    }
+    interface HTMLPatientListElement extends Components.PatientList, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLPatientListElementEventMap>(type: K, listener: (this: HTMLPatientListElement, ev: PatientListCustomEvent<HTMLPatientListElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLPatientListElementEventMap>(type: K, listener: (this: HTMLPatientListElement, ev: PatientListCustomEvent<HTMLPatientListElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLPatientListElement: {
+        prototype: HTMLPatientListElement;
+        new (): HTMLPatientListElement;
+    };
+    interface HTMLRandomPatientElementEventMap {
+        "entry-clicked": string;
+    }
+    interface HTMLRandomPatientElement extends Components.RandomPatient, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLRandomPatientElementEventMap>(type: K, listener: (this: HTMLRandomPatientElement, ev: RandomPatientCustomEvent<HTMLRandomPatientElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLRandomPatientElementEventMap>(type: K, listener: (this: HTMLRandomPatientElement, ev: RandomPatientCustomEvent<HTMLRandomPatientElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLRandomPatientElement: {
+        prototype: HTMLRandomPatientElement;
+        new (): HTMLRandomPatientElement;
+    };
+    interface HTMLXkokaUsecaseElementEventMap {
+        "entry-clicked": string;
+    }
+    interface HTMLXkokaUsecaseElement extends Components.XkokaUsecase, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLXkokaUsecaseElementEventMap>(type: K, listener: (this: HTMLXkokaUsecaseElement, ev: XkokaUsecaseCustomEvent<HTMLXkokaUsecaseElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLXkokaUsecaseElementEventMap>(type: K, listener: (this: HTMLXkokaUsecaseElement, ev: XkokaUsecaseCustomEvent<HTMLXkokaUsecaseElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLXkokaUsecaseElement: {
+        prototype: HTMLXkokaUsecaseElement;
+        new (): HTMLXkokaUsecaseElement;
+    };
     interface HTMLElementTagNameMap {
-        "bm-ambulance-wl-editor": HTMLBmAmbulanceWlEditorElement;
-        "bm-ambulance-wl-list": HTMLBmAmbulanceWlListElement;
         "cv1-zaznam-chorob-app": HTMLCv1ZaznamChorobAppElement;
+        "patient-app": HTMLPatientAppElement;
+        "patient-list": HTMLPatientListElement;
+        "random-patient": HTMLRandomPatientElement;
+        "xkoka-usecase": HTMLXkokaUsecaseElement;
     }
 }
 declare namespace LocalJSX {
-    interface BmAmbulanceWlEditor {
-        "ambulanceId"?: string;
-        "apiBase"?: string;
-        "entryId"?: string;
-        "onEditor-closed"?: (event: BmAmbulanceWlEditorCustomEvent<string>) => void;
-    }
-    interface BmAmbulanceWlList {
-        "ambulanceId"?: string;
-        "apiBase"?: string;
-        "onEntry-clicked"?: (event: BmAmbulanceWlListCustomEvent<string>) => void;
-    }
     interface Cv1ZaznamChorobApp {
         "ambulanceId"?: string;
         "apiBase"?: string;
         "basePath"?: string;
     }
+    interface PatientApp {
+        "apiBase"?: string;
+        "basePath"?: string;
+    }
+    interface PatientList {
+        "onEntry-clicked"?: (event: PatientListCustomEvent<string>) => void;
+    }
+    interface RandomPatient {
+        "onEntry-clicked"?: (event: RandomPatientCustomEvent<string>) => void;
+    }
+    interface XkokaUsecase {
+        "onEntry-clicked"?: (event: XkokaUsecaseCustomEvent<string>) => void;
+    }
     interface IntrinsicElements {
-        "bm-ambulance-wl-editor": BmAmbulanceWlEditor;
-        "bm-ambulance-wl-list": BmAmbulanceWlList;
         "cv1-zaznam-chorob-app": Cv1ZaznamChorobApp;
+        "patient-app": PatientApp;
+        "patient-list": PatientList;
+        "random-patient": RandomPatient;
+        "xkoka-usecase": XkokaUsecase;
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "bm-ambulance-wl-editor": LocalJSX.BmAmbulanceWlEditor & JSXBase.HTMLAttributes<HTMLBmAmbulanceWlEditorElement>;
-            "bm-ambulance-wl-list": LocalJSX.BmAmbulanceWlList & JSXBase.HTMLAttributes<HTMLBmAmbulanceWlListElement>;
             "cv1-zaznam-chorob-app": LocalJSX.Cv1ZaznamChorobApp & JSXBase.HTMLAttributes<HTMLCv1ZaznamChorobAppElement>;
+            "patient-app": LocalJSX.PatientApp & JSXBase.HTMLAttributes<HTMLPatientAppElement>;
+            "patient-list": LocalJSX.PatientList & JSXBase.HTMLAttributes<HTMLPatientListElement>;
+            "random-patient": LocalJSX.RandomPatient & JSXBase.HTMLAttributes<HTMLRandomPatientElement>;
+            "xkoka-usecase": LocalJSX.XkokaUsecase & JSXBase.HTMLAttributes<HTMLXkokaUsecaseElement>;
         }
     }
 }

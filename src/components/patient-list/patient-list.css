@@ -1,0 +1,31 @@
+:host {
+  display: block;
+}
+
+#patient-list thead th {
+  padding: .25rem .5rem;
+  text-align: left;
+}
+
+#patient-list tbody td {
+  padding-left: .5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  border-collapse: collapse;
+}
+
+#patient-list tbody td.icon {
+  padding: .25rem;
+}
+
+#patient-list tbody td .button {
+  max-width: 30px;
+  max-height: 30px;
+}
+
+#patient-list tbody tr {
+  transition: background-color .2s;
+}
+
+#patient-list tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.12);
+}
