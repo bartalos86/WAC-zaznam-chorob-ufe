@@ -21,6 +21,11 @@ export class RandomPatient {
 
   @State() patient: Patient
 
+  private diagnosisInput: HTMLInputElement;
+  private fromInput: HTMLInputElement;
+  private untilInput: HTMLInputElement;
+
+
   componentWillLoad() {
     const url = new URL(window.location.href)
     const patientID = url.searchParams.get('id')
@@ -51,8 +56,36 @@ export class RandomPatient {
     }
   }
 
+  addIllness = (e: Event) => {
+    e.preventDefault();
+
+    const diagnosis = this.diagnosisInput.value
+    const from = this.fromInput.value
+    const until = this.untilInput.value
+
+
+    this.patient = {
+      ...this.patient,
+      ilnesses: [
+        ...this.patient.ilnesses,
+        {
+          id: `I${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
+          diagnosis,
+          sickLeaveFrom: from,
+          sickLeaveUntil: until,
+        }
+      ]
+    }
+
+
+    this.diagnosisInput.value = ""
+    this.fromInput.value = ""
+    this.untilInput.value = ""
+  }
+
+
   deleteIllness(id: string) {
-    return () => {
+    return async () => {
       //call backen
 
       this.patient = {
@@ -80,8 +113,8 @@ export class RandomPatient {
           <thead>
             <tr>
               <th>Diagnóza</th>
-              <th>PN Od</th>
-              <th>PN Do</th>
+              <th>Začiatok PN</th>
+              <th>Koniec PN</th>
               <th></th>
             </tr>
           </thead>
@@ -104,6 +137,22 @@ export class RandomPatient {
           </tbody>
 
         </table>
+
+
+        <md-filled-icon-button >
+          <md-icon>add</md-icon>
+        </md-filled-icon-button>
+
+        <form onSubmit={this.addIllness}>
+          <md-outlined-text-field label="Diagnóza" id='diagnosis' required ref={e => this.diagnosisInput = e}></md-outlined-text-field>
+          Začiatok PN:
+          <input type='date' id='sl-from' required ref={e => this.fromInput = e}></input>
+          Koniec PN:
+          <input type='date' id='sl-until' required ref={e => this.untilInput = e}></input>
+
+          <md-outlined-button>Submit</md-outlined-button>
+        </form>
+
       </Host>
     );
   }

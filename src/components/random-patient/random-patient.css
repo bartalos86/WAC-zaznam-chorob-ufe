@@ -30,3 +30,11 @@ table tbody tr {
 table tbody tr:hover {
   background-color: rgba(0, 0, 0, 0.12);
 }
+
+
+form {
+  margin-top: 5rem;
+  display: grid;
+  gap: 1rem;
+  max-width: 300px;
+}
