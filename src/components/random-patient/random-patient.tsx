@@ -3,7 +3,7 @@ import { Component, Host, h, Event, EventEmitter, State } from '@stencil/core';
 type Patient = {
   id: string,
   name: string,
-  ilnesses: {
+  illnesses: {
     id: string,
     diagnosis: string,
     sickLeaveFrom: string,
@@ -21,6 +21,10 @@ export class RandomPatient {
 
   @State() patient: Patient
   @State() isAdding = false
+  @State() edit = {
+    isActive: false,
+    id: ''
+  }
 
   private diagnosisInput: HTMLInputElement
   private fromInput: HTMLInputElement
@@ -40,7 +44,7 @@ export class RandomPatient {
     this.patient = {
       id: "P001",
       name: "Ján Novák",
-      ilnesses: [
+      illnesses: [
         {
           id: "I001",
           diagnosis: "Chrípka",
@@ -57,7 +61,19 @@ export class RandomPatient {
     }
   }
 
-  addIllness = (e: Event) => {
+  toggleAdd() {
+    this.isAdding = !this.isAdding
+  }
+
+  toggleEdit(id: string = null) {
+    const active = !this.edit.isActive
+    this.edit = {
+      isActive: active,
+      id: id
+    }
+  }
+
+  async addIllness(e: Event) {
     e.preventDefault()
 
     const diagnosis = this.diagnosisInput.value
@@ -67,8 +83,8 @@ export class RandomPatient {
 
     this.patient = {
       ...this.patient,
-      ilnesses: [
-        ...this.patient.ilnesses,
+      illnesses: [
+        ...this.patient.illnesses,
         {
           id: `I${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
           diagnosis,
@@ -83,7 +99,27 @@ export class RandomPatient {
     this.fromInput.value = ""
     this.untilInput.value = ""
 
-    this.isAdding = false
+    this.toggleAdd()
+  }
+
+  async editIllness(e: Event) {
+    e.preventDefault()
+
+    const form = e.target as HTMLFormElement
+    const input = form.querySelector('input')
+    const date = input.value
+    const id = input.dataset.id
+
+    // call backend
+
+    const illness = this.patient.illnesses.find(i => i.id === id)
+    if ( !illness ) {
+      this.toggleEdit()
+      return
+    }
+
+    illness.sickLeaveUntil = date
+    this.toggleEdit()
   }
 
 
@@ -93,7 +129,7 @@ export class RandomPatient {
 
       this.patient = {
         ...this.patient,
-        ilnesses: this.patient.ilnesses.filter(i => i.id !== id)
+        illnesses: this.patient.illnesses.filter(i => i.id !== id)
       }
     }
   }
@@ -124,11 +160,32 @@ export class RandomPatient {
 
           <tbody>
             {
-              this.patient.ilnesses.map(i =>
+              this.patient.illnesses.map(i =>
                 <tr data-id={i.id}>
                   <td>{i.diagnosis}</td>
                   <td>{i.sickLeaveFrom}</td>
-                  <td>{i.sickLeaveUntil}</td>
+                  <td>
+                    {
+                      this.edit.isActive && this.edit.id === i.id ?
+                        <form onSubmit={this.editIllness.bind(this)}>
+                          <input type='date' required data-id={i.id} />
+                          <div>
+                            <md-filled-icon-button>
+                              <md-icon>check_circle</md-icon>
+                            </md-filled-icon-button>
+                            <md-filled-icon-button type='reset' onClick={() => this.toggleEdit()}>
+                              <md-icon>cancel</md-icon>
+                            </md-filled-icon-button>
+                          </div>
+                        </form> :
+                        <>
+                          {i.sickLeaveUntil}
+                          <md-filled-icon-button onClick={() => this.toggleEdit(i.id)}>
+                            <md-icon>edit</md-icon>
+                          </md-filled-icon-button>
+                        </>
+                    }
+                  </td>
                   <td class='icon'>
                     <md-filled-icon-button class='button' onClick= {this.deleteIllness(i.id)}>
                       <md-icon>delete</md-icon>
@@ -143,16 +200,22 @@ export class RandomPatient {
 
         {
           this.isAdding ?
-            <form onSubmit={this.addIllness}>
+            <form onSubmit={this.addIllness.bind(this)}>
+              <h>
+                Pridať chorobu pre pacienta
+              </h>
               <md-outlined-text-field label="Diagnóza" id='diagnosis' required ref={e => this.diagnosisInput = e}></md-outlined-text-field>
               Začiatok PN:
               <input type='date' id='sl-from' required ref={e => this.fromInput = e}></input>
               Koniec PN:
               <input type='date' id='sl-until' required ref={e => this.untilInput = e}></input>
 
-              <md-outlined-button>Submit</md-outlined-button>
+              <div>
+                <md-outlined-button>Submit</md-outlined-button>
+                <md-outlined-button type='reset' onClick={() => this.toggleAdd()}>Zrušiť</md-outlined-button>
+              </div>
             </form> :
-            <md-filled-icon-button onClick={() => this.isAdding = true}>
+            <md-filled-icon-button onClick={() => this.toggleAdd()}>
               <md-icon>add</md-icon>
             </md-filled-icon-button>
         }
