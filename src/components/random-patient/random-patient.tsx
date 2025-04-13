@@ -20,10 +20,11 @@ export class RandomPatient {
   @Event({ eventName: "entry-clicked"}) entryClicked: EventEmitter<string>
 
   @State() patient: Patient
+  @State() isAdding = false
 
-  private diagnosisInput: HTMLInputElement;
-  private fromInput: HTMLInputElement;
-  private untilInput: HTMLInputElement;
+  private diagnosisInput: HTMLInputElement
+  private fromInput: HTMLInputElement
+  private untilInput: HTMLInputElement
 
 
   componentWillLoad() {
@@ -57,7 +58,7 @@ export class RandomPatient {
   }
 
   addIllness = (e: Event) => {
-    e.preventDefault();
+    e.preventDefault()
 
     const diagnosis = this.diagnosisInput.value
     const from = this.fromInput.value
@@ -81,12 +82,14 @@ export class RandomPatient {
     this.diagnosisInput.value = ""
     this.fromInput.value = ""
     this.untilInput.value = ""
+
+    this.isAdding = false
   }
 
 
   deleteIllness(id: string) {
     return async () => {
-      //call backen
+      //call backend
 
       this.patient = {
         ...this.patient,
@@ -138,21 +141,21 @@ export class RandomPatient {
 
         </table>
 
+        {
+          this.isAdding ?
+            <form onSubmit={this.addIllness}>
+              <md-outlined-text-field label="Diagnóza" id='diagnosis' required ref={e => this.diagnosisInput = e}></md-outlined-text-field>
+              Začiatok PN:
+              <input type='date' id='sl-from' required ref={e => this.fromInput = e}></input>
+              Koniec PN:
+              <input type='date' id='sl-until' required ref={e => this.untilInput = e}></input>
 
-        <md-filled-icon-button >
-          <md-icon>add</md-icon>
-        </md-filled-icon-button>
-
-        <form onSubmit={this.addIllness}>
-          <md-outlined-text-field label="Diagnóza" id='diagnosis' required ref={e => this.diagnosisInput = e}></md-outlined-text-field>
-          Začiatok PN:
-          <input type='date' id='sl-from' required ref={e => this.fromInput = e}></input>
-          Koniec PN:
-          <input type='date' id='sl-until' required ref={e => this.untilInput = e}></input>
-
-          <md-outlined-button>Submit</md-outlined-button>
-        </form>
-
+              <md-outlined-button>Submit</md-outlined-button>
+            </form> :
+            <md-filled-icon-button onClick={() => this.isAdding = true}>
+              <md-icon>add</md-icon>
+            </md-filled-icon-button>
+        }
       </Host>
     );
   }
