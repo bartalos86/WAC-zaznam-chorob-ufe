@@ -19,8 +19,6 @@ export namespace Components {
     }
     interface RandomPatient {
     }
-    interface XkokaUsecase {
-    }
 }
 export interface PatientListCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -29,10 +27,6 @@ export interface PatientListCustomEvent<T> extends CustomEvent<T> {
 export interface RandomPatientCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLRandomPatientElement;
-}
-export interface XkokaUsecaseCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLXkokaUsecaseElement;
 }
 declare global {
     interface HTMLCv1ZaznamChorobAppElement extends Components.Cv1ZaznamChorobApp, HTMLStencilElement {
@@ -81,29 +75,11 @@ declare global {
         prototype: HTMLRandomPatientElement;
         new (): HTMLRandomPatientElement;
     };
-    interface HTMLXkokaUsecaseElementEventMap {
-        "entry-clicked": string;
-    }
-    interface HTMLXkokaUsecaseElement extends Components.XkokaUsecase, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLXkokaUsecaseElementEventMap>(type: K, listener: (this: HTMLXkokaUsecaseElement, ev: XkokaUsecaseCustomEvent<HTMLXkokaUsecaseElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLXkokaUsecaseElementEventMap>(type: K, listener: (this: HTMLXkokaUsecaseElement, ev: XkokaUsecaseCustomEvent<HTMLXkokaUsecaseElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLXkokaUsecaseElement: {
-        prototype: HTMLXkokaUsecaseElement;
-        new (): HTMLXkokaUsecaseElement;
-    };
     interface HTMLElementTagNameMap {
         "cv1-zaznam-chorob-app": HTMLCv1ZaznamChorobAppElement;
         "patient-app": HTMLPatientAppElement;
         "patient-list": HTMLPatientListElement;
         "random-patient": HTMLRandomPatientElement;
-        "xkoka-usecase": HTMLXkokaUsecaseElement;
     }
 }
 declare namespace LocalJSX {
@@ -122,15 +98,11 @@ declare namespace LocalJSX {
     interface RandomPatient {
         "onEntry-clicked"?: (event: RandomPatientCustomEvent<string>) => void;
     }
-    interface XkokaUsecase {
-        "onEntry-clicked"?: (event: XkokaUsecaseCustomEvent<string>) => void;
-    }
     interface IntrinsicElements {
         "cv1-zaznam-chorob-app": Cv1ZaznamChorobApp;
         "patient-app": PatientApp;
         "patient-list": PatientList;
         "random-patient": RandomPatient;
-        "xkoka-usecase": XkokaUsecase;
     }
 }
 export { LocalJSX as JSX };
@@ -141,7 +113,6 @@ declare module "@stencil/core" {
             "patient-app": LocalJSX.PatientApp & JSXBase.HTMLAttributes<HTMLPatientAppElement>;
             "patient-list": LocalJSX.PatientList & JSXBase.HTMLAttributes<HTMLPatientListElement>;
             "random-patient": LocalJSX.RandomPatient & JSXBase.HTMLAttributes<HTMLRandomPatientElement>;
-            "xkoka-usecase": LocalJSX.XkokaUsecase & JSXBase.HTMLAttributes<HTMLXkokaUsecaseElement>;
         }
     }
 }
