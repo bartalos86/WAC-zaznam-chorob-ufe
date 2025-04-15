@@ -12,6 +12,7 @@ import '@material/web/divider/divider.js'
 import '@material/web/iconbutton/filled-icon-button.js'
 import '@material/web/textfield/outlined-text-field.js';
 import { registerNavigationApi } from './navigation.js'
+import AXIOS_INSTANCE from '../api/axios_instance/index.js'
 
 export default function() {
     registerNavigationApi()

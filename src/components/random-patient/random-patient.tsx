@@ -1,15 +1,7 @@
 import { Component, Host, h, Event, EventEmitter, State } from '@stencil/core';
-
-type Patient = {
-  id: string,
-  name: string,
-  illnesses: {
-    id: string,
-    diagnosis: string,
-    sickLeaveFrom: string,
-    sickLeaveUntil: string
-  }[]
-}
+import Patient from '../../models/Patient';
+import AXIOS_INSTANCE from '../../api/axios_instance';
+import Illness from '../../models/Illness';
 
 @Component({
   tag: 'random-patient',
@@ -31,33 +23,32 @@ export class RandomPatient {
   private untilInput: HTMLInputElement
 
 
-  componentWillLoad() {
+  async componentWillLoad() {
     const url = new URL(window.location.href)
-    const patientID = url.searchParams.get('id')
+    const patientName = url.searchParams.get('name')
 
-    if (!patientID) {
-      console.warn("No 'id' query parameter found in URL.")
+    if (!patientName) {
+      console.warn("No 'name' query parameter found in URL.")
       return
     }
     // fetch the damn user
 
-    this.patient = {
-      id: "P001",
-      name: "Ján Novák",
-      illnesses: [
-        {
-          id: "I001",
-          diagnosis: "Chrípka",
-          sickLeaveFrom: "2025-04-01",
-          sickLeaveUntil: "2025-04-07"
-        },
-        {
-          id: "I002",
-          diagnosis: "Zlomená noha",
-          sickLeaveFrom: "2025-03-15",
-          sickLeaveUntil: "2025-03-30"
-        }
-      ]
+    try {
+      type data = {
+        message: string,
+        patients: Patient[],
+        status: string
+      }
+
+      const response = await AXIOS_INSTANCE.get<data>(`/patients?name=${patientName}`)
+      if ( response.data.patients.length != 1 ) {
+        console.log('Unfortunate')
+        return
+      } 
+      this.patient = response.data.patients.at(0)
+    } catch(e: unknown) {
+      console.log('unfortunate again')
+      console.error(e)
     }
   }
 
@@ -76,28 +67,33 @@ export class RandomPatient {
   async addIllness(e: Event) {
     e.preventDefault()
 
-    const diagnosis = this.diagnosisInput.value
-    const from = this.fromInput.value
-    const until = this.untilInput.value
+    const illness = {
+      diagnosis: this.diagnosisInput.value,
+      sl_from: this.fromInput.value,
+      sl_until: this.untilInput.value,
+      id: null
+    }
 
+    try {
+      const response = await AXIOS_INSTANCE.post<Illness>(`/patients/${this.patient.id}/illnesses`, {
+        diagnosis: illness.diagnosis,
+        sl_from: illness.sl_from,
+        sl_until: illness.sl_until
+      })
+
+      illness.id = response.data.id
+    } catch(e: unknown) {
+      console.log('unfortunate again but you keep trying')
+      console.error(e)
+    }
 
     this.patient = {
       ...this.patient,
       illnesses: [
         ...this.patient.illnesses,
-        {
-          id: `I${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
-          diagnosis,
-          sickLeaveFrom: from,
-          sickLeaveUntil: until,
-        }
+        illness
       ]
     }
-
-
-    this.diagnosisInput.value = ""
-    this.fromInput.value = ""
-    this.untilInput.value = ""
 
     this.toggleAdd()
   }
@@ -110,22 +106,37 @@ export class RandomPatient {
     const date = input.value
     const id = input.dataset.id
 
-    // call backend
-
     const illness = this.patient.illnesses.find(i => i.id === id)
     if ( !illness ) {
       this.toggleEdit()
       return
     }
 
-    illness.sickLeaveUntil = date
+    try {
+      const response = await AXIOS_INSTANCE.patch(`/patients/${this.patient.id}/illnesses`, {
+        illness_id: id,
+        sl_until: date
+      }) 
+    } catch(e: unknown) {
+      console.log('Quite unfortunate indeed')
+      console.error(e)
+      return
+    }
+
+    illness.sl_until = date
     this.toggleEdit()
   }
 
 
   deleteIllness(id: string) {
     return async () => {
-      //call backend
+      try {
+        const response = await AXIOS_INSTANCE.delete(`/patients/${this.patient.id}/illnesses?illness_id=${id}`)
+      } catch(e: unknown) {
+        console.log('Quite unfortunate indeed')
+        console.error(e)
+        return
+      }
 
       this.patient = {
         ...this.patient,
@@ -163,7 +174,7 @@ export class RandomPatient {
               this.patient.illnesses.map(i =>
                 <tr data-id={i.id}>
                   <td>{i.diagnosis}</td>
-                  <td>{i.sickLeaveFrom}</td>
+                  <td>{i.sl_from}</td>
                   <td>
                     {
                       this.edit.isActive && this.edit.id === i.id ?
@@ -179,7 +190,7 @@ export class RandomPatient {
                           </div>
                         </form> :
                         <>
-                          {i.sickLeaveUntil}
+                          {i.sl_until}
                           <md-filled-icon-button onClick={() => this.toggleEdit(i.id)}>
                             <md-icon>edit</md-icon>
                           </md-filled-icon-button>
