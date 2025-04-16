@@ -63,9 +63,9 @@ export class PatientList {
 
           <tbody>
             {
-              this.patients.map(p =>
+              this.patients.map((p, i) =>
                 <tr>
-                  <td>{p.id}</td>
+                  <td>{`P-0${i}`}</td>
                   <td>{p.name}</td>
                   <td class='icon'>
                     <md-filled-icon-button class='button' onClick={ () => this.entryClicked.emit(getEventDetail(p.name))}>
