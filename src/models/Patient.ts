@@ -3,7 +3,7 @@ import Illness from "./Illness"
 type Patient = {
     id: string,
     name: string,
-    illnesses: Illness[]
+    illnesses: Illness[] | null
 }
 
 

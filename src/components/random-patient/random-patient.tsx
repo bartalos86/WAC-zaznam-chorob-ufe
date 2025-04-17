@@ -132,15 +132,15 @@ export class RandomPatient {
     return async () => {
       try {
         const response = await AXIOS_INSTANCE.delete(`/patients/${this.patient.id}/illnesses?illness_id=${id}`)
+
+        this.patient = {
+          ...this.patient,
+          illnesses: this.patient.illnesses.filter(i => i.id !== id)
+        }
       } catch(e: unknown) {
         console.log('Quite unfortunate indeed')
         console.error(e)
         return
-      }
-
-      this.patient = {
-        ...this.patient,
-        illnesses: this.patient.illnesses.filter(i => i.id !== id)
       }
     }
   }
@@ -171,7 +171,7 @@ export class RandomPatient {
 
           <tbody>
             {
-              this.patient.illnesses.map(i =>
+              this.patient.illnesses?.map(i =>
                 <tr data-id={i.id}>
                   <td>{i.diagnosis}</td>
                   <td>{i.sl_from}</td>
@@ -212,9 +212,9 @@ export class RandomPatient {
         {
           this.isAdding ?
             <form onSubmit={this.addIllness.bind(this)}>
-              <h>
+              <h2>
                 Pridať chorobu pre pacienta
-              </h>
+              </h2>
               <md-outlined-text-field label="Diagnóza" id='diagnosis' required ref={e => this.diagnosisInput = e}></md-outlined-text-field>
               Začiatok PN:
               <input type='date' id='sl-from' required ref={e => this.fromInput = e}></input>
