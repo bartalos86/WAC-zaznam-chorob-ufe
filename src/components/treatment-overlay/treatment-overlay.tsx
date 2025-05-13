@@ -54,6 +54,29 @@ export class TreatmentOverlay {
     this.buttonText = this.treatmentIdInput?.value ? 'Upraviť' : 'Pridať';
   }
 
+  private resetInputFields = () => {
+    this.treatmentIdInput = null;
+    this.treatmentNameInput.value = '';
+    this.treatmentDescriptionInput.value = '';
+    this.treatmentStartInput.value = '';
+    this.treatmentEndInput.value = '';
+    // reset validation messages
+    this.nameValidation = 'Meno liečby nesmie byť prázdne!';
+    this.descriptionValidation = 'Popis liečby nesmie byť prázdny!';
+    this.startValidation = 'Začiatok liečby nesmie byť nešpecifikovaný!';
+    this.endValidation = 'Koniec liečby nesmie byť nešpecifikovaný!';
+    // set button text to add label
+    this.buttonText = 'Pridať';
+  }
+
+  private clearValidationMessages = () => {
+    // clear validation messages
+    this.nameValidation = '';
+    this.descriptionValidation = '';
+    this.startValidation = '';
+    this.endValidation = '';
+  }
+
   private handleAdd = async () => {
     const newTreatment = {
       name: this.treatmentNameInput.value,
@@ -77,6 +100,8 @@ export class TreatmentOverlay {
       if (newTreatment.description) {
         this.illness.treatments = [...(this.illness.treatments || []), newTreatment];
       }
+      // Clear the fields
+      this.resetInputFields();
       this._updateTrigger++;
     } catch (e) {
       console.error(e);
@@ -100,12 +125,7 @@ export class TreatmentOverlay {
       this.illness.treatments = this.illness.treatments.map(treatment =>
         treatment.id === treatmentId ? updatedTreatment : treatment
       );
-      this.treatmentIdInput = null;
-      this.treatmentNameInput.value = '';
-      this.treatmentDescriptionInput.value = '';
-      this.treatmentStartInput.value = '';
-      this.treatmentEndInput.value = '';
-      this.buttonText = 'Pridať';
+      this.resetInputFields();
       this._updateTrigger++;
     } catch (e) {
       console.error(e);
@@ -137,7 +157,7 @@ export class TreatmentOverlay {
               <li>
                 <div class="treatment-item">
                   <div class="treatment-details">
-                    <span class="description-button" title={'Popis liečby: '+t.description}>📃</span>
+                    <span class="description-button" title={'Popis liečby: ' + t.description}>📃</span>
                     <strong>{t.name}</strong> 🟢{t.start}🔴{t.end}
                   </div>
                   <div class="treatment-actions">
@@ -150,6 +170,7 @@ export class TreatmentOverlay {
                       this.treatmentDescriptionInput.value = t.description;
                       this.treatmentStartInput.value = t.start;
                       this.treatmentEndInput.value = t.end;
+                      this.clearValidationMessages();
                       this.handleButtonText();
                     }}>
                       <md-icon>edit</md-icon>
