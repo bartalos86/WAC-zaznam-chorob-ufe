@@ -5,6 +5,8 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { Illness } from "./models/Illness";
+export { Illness } from "./models/Illness";
 export namespace Components {
     interface Cv1ZaznamChorobApp {
         "ambulanceId": string;
@@ -19,6 +21,10 @@ export namespace Components {
     }
     interface RandomPatient {
     }
+    interface TreatmentOverlay {
+        "illness": Illness;
+        "patientId": string;
+    }
 }
 export interface PatientListCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -27,6 +33,10 @@ export interface PatientListCustomEvent<T> extends CustomEvent<T> {
 export interface RandomPatientCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLRandomPatientElement;
+}
+export interface TreatmentOverlayCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLTreatmentOverlayElement;
 }
 declare global {
     interface HTMLCv1ZaznamChorobAppElement extends Components.Cv1ZaznamChorobApp, HTMLStencilElement {
@@ -75,11 +85,29 @@ declare global {
         prototype: HTMLRandomPatientElement;
         new (): HTMLRandomPatientElement;
     };
+    interface HTMLTreatmentOverlayElementEventMap {
+        "closeOverlay": void;
+    }
+    interface HTMLTreatmentOverlayElement extends Components.TreatmentOverlay, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLTreatmentOverlayElementEventMap>(type: K, listener: (this: HTMLTreatmentOverlayElement, ev: TreatmentOverlayCustomEvent<HTMLTreatmentOverlayElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLTreatmentOverlayElementEventMap>(type: K, listener: (this: HTMLTreatmentOverlayElement, ev: TreatmentOverlayCustomEvent<HTMLTreatmentOverlayElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLTreatmentOverlayElement: {
+        prototype: HTMLTreatmentOverlayElement;
+        new (): HTMLTreatmentOverlayElement;
+    };
     interface HTMLElementTagNameMap {
         "cv1-zaznam-chorob-app": HTMLCv1ZaznamChorobAppElement;
         "patient-app": HTMLPatientAppElement;
         "patient-list": HTMLPatientListElement;
         "random-patient": HTMLRandomPatientElement;
+        "treatment-overlay": HTMLTreatmentOverlayElement;
     }
 }
 declare namespace LocalJSX {
@@ -98,11 +126,17 @@ declare namespace LocalJSX {
     interface RandomPatient {
         "onEntry-clicked"?: (event: RandomPatientCustomEvent<string>) => void;
     }
+    interface TreatmentOverlay {
+        "illness"?: Illness;
+        "onCloseOverlay"?: (event: TreatmentOverlayCustomEvent<void>) => void;
+        "patientId"?: string;
+    }
     interface IntrinsicElements {
         "cv1-zaznam-chorob-app": Cv1ZaznamChorobApp;
         "patient-app": PatientApp;
         "patient-list": PatientList;
         "random-patient": RandomPatient;
+        "treatment-overlay": TreatmentOverlay;
     }
 }
 export { LocalJSX as JSX };
@@ -113,6 +147,7 @@ declare module "@stencil/core" {
             "patient-app": LocalJSX.PatientApp & JSXBase.HTMLAttributes<HTMLPatientAppElement>;
             "patient-list": LocalJSX.PatientList & JSXBase.HTMLAttributes<HTMLPatientListElement>;
             "random-patient": LocalJSX.RandomPatient & JSXBase.HTMLAttributes<HTMLRandomPatientElement>;
+            "treatment-overlay": LocalJSX.TreatmentOverlay & JSXBase.HTMLAttributes<HTMLTreatmentOverlayElement>;
         }
     }
 }

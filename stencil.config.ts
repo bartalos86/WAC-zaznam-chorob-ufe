@@ -22,6 +22,7 @@ export const config: Config = {
     },
   ],
   testing: {
+    // browserExecutablePath: 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
     browserHeadless: "shell",
   },
 };

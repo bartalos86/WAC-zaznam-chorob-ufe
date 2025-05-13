@@ -1,4 +1,4 @@
-import Illness from "./Illness"
+import type { Illness } from './Illness';
 
 type Patient = {
     id: string,

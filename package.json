@@ -40,6 +40,7 @@
     "openapi": "openapi-generator-cli generate",
     "build": "stencil build",
     "test": "stencil test --spec --e2e",
+    "spec": "stencil test --spec",
     "test:jest": "jest --config ./jest.config.js",
     "test.watch": "stencil test --spec --e2e --watchAll",
     "generate": "stencil generate"

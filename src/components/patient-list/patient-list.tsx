@@ -1,4 +1,4 @@
-import { Component, h, Host, State, Event, EventEmitter } from '@stencil/core';
+import { Component, h, Host, State, Event, EventEmitter, Prop } from '@stencil/core';
 import AXIOS_INSTANCE from '../../api/axios_instance';
 import Patient from '../../models/Patient';
 
@@ -17,6 +17,11 @@ export class PatientList {
 
   private nameInput: HTMLInputElement
 
+  // testing only
+  setTestPatients(testingPatients: Patient[]) {
+    this.patients = testingPatients;
+  }
+
   async componentWillLoad() {
     try {
       type data = {
@@ -30,7 +35,7 @@ export class PatientList {
     } catch (e: unknown) {
         console.log(`Unfortunate`)
         console.error(e)
-    } 
+    }
   }
 
   toggleAdd() {
@@ -43,10 +48,10 @@ export class PatientList {
     try {
       type data = {
         message: string,
-        patient: Patient, 
+        patient: Patient,
         status: string
       }
-      const response = await AXIOS_INSTANCE.post<data>(`/api/patients`, {
+      const response = await AXIOS_INSTANCE.post<data>(`/patients`, {
         name
       })
 

@@ -1,7 +1,7 @@
 import { Component, Host, h, Event, EventEmitter, State } from '@stencil/core';
 import Patient from '../../models/Patient';
 import AXIOS_INSTANCE from '../../api/axios_instance';
-import Illness from '../../models/Illness';
+import type { Illness } from '../../models/Illness';
 
 @Component({
   tag: 'random-patient',
@@ -9,7 +9,7 @@ import Illness from '../../models/Illness';
   shadow: true,
 })
 export class RandomPatient {
-  @Event({ eventName: "entry-clicked"}) entryClicked: EventEmitter<string>
+  @Event({ eventName: "entry-clicked" }) entryClicked: EventEmitter<string>
 
   @State() patient: Patient
   @State() isAdding = false
@@ -17,11 +17,18 @@ export class RandomPatient {
     isActive: false,
     id: ''
   }
+  // Use-Case 2 - treatments
+  @State() showOverlay = false;
+  @State() activeIllness: Illness = null;
 
   private diagnosisInput: HTMLInputElement
   private fromInput: HTMLInputElement
   private untilInput: HTMLInputElement
 
+  // for tests only
+  setTestPatient(testPatient: Patient) {
+    this.patient = testPatient;
+  }
 
   async componentWillLoad() {
     const url = new URL(window.location.href)
@@ -41,12 +48,12 @@ export class RandomPatient {
       }
 
       const response = await AXIOS_INSTANCE.get<data>(`/patients?name=${patientName}`)
-      if ( response.data.patients.length != 1 ) {
+      if (response.data.patients.length != 1) {
         console.log('Unfortunate')
         return
-      } 
+      }
       this.patient = response.data.patients.at(0)
-    } catch(e: unknown) {
+    } catch (e: unknown) {
       console.log('unfortunate again')
       console.error(e)
     }
@@ -82,7 +89,7 @@ export class RandomPatient {
       })
 
       illness.id = response.data.id
-    } catch(e: unknown) {
+    } catch (e: unknown) {
       console.log('unfortunate again but you keep trying')
       console.error(e)
     }
@@ -107,17 +114,17 @@ export class RandomPatient {
     const id = input.dataset.id
 
     const illness = this.patient.illnesses.find(i => i.id === id)
-    if ( !illness ) {
+    if (!illness) {
       this.toggleEdit()
       return
     }
 
     try {
-      const response = await AXIOS_INSTANCE.patch(`/patients/${this.patient.id}/illnesses`, {
+      await AXIOS_INSTANCE.patch(`/patients/${this.patient.id}/illnesses`, {
         illness_id: id,
         sl_until: date
-      }) 
-    } catch(e: unknown) {
+      })
+    } catch (e: unknown) {
       console.log('Quite unfortunate indeed')
       console.error(e)
       return
@@ -127,20 +134,18 @@ export class RandomPatient {
     this.toggleEdit()
   }
 
-
   deleteIllness(id: string) {
     return async () => {
       try {
-        const response = await AXIOS_INSTANCE.delete(`/patients/${this.patient.id}/illnesses?illness_id=${id}`)
-
-        this.patient = {
-          ...this.patient,
-          illnesses: this.patient.illnesses.filter(i => i.id !== id)
-        }
-      } catch(e: unknown) {
+        await AXIOS_INSTANCE.delete(`/patients/${this.patient.id}/illnesses?illness_id=${id}`)
+      } catch (e: unknown) {
         console.log('Quite unfortunate indeed')
         console.error(e)
         return
+      }
+      this.patient = {
+        ...this.patient,
+        illnesses: this.patient.illnesses.filter(i => i.id !== id)
       }
     }
   }
@@ -154,10 +159,10 @@ export class RandomPatient {
 
     return (
       <Host>
-        <md-filled-icon-button onClick={ () => this.entryClicked.emit(getEventDetail())}>
+        <md-filled-icon-button onClick={() => this.entryClicked.emit(getEventDetail())}>
           <md-icon>arrow_back</md-icon>
         </md-filled-icon-button>
-        <h1>{this.patient.name}</h1>
+        <h1>{this.patient?.name}</h1>
 
         <table>
           <thead>
@@ -165,13 +170,14 @@ export class RandomPatient {
               <th>Diagnóza</th>
               <th>Začiatok PN</th>
               <th>Koniec PN</th>
+              <th>Liečba</th> {/*Use Case 2 - treatments*/}
               <th></th>
             </tr>
           </thead>
 
           <tbody>
             {
-              this.patient.illnesses?.map(i =>
+              this.patient?.illnesses?.map(i =>
                 <tr data-id={i.id}>
                   <td>{i.diagnosis}</td>
                   <td>{i.sl_from}</td>
@@ -189,16 +195,29 @@ export class RandomPatient {
                             </md-filled-icon-button>
                           </div>
                         </form> :
-                        <>
-                          {i.sl_until}
-                          <md-filled-icon-button onClick={() => this.toggleEdit(i.id)}>
-                            <md-icon>edit</md-icon>
-                          </md-filled-icon-button>
-                        </>
+                        (
+                          <div class='date-edit'>
+                            {i.sl_until}
+                            <md-filled-icon-button onClick={() => this.toggleEdit(i.id)}>
+                              <md-icon>edit</md-icon>
+                            </md-filled-icon-button>
+                          </div>
+                        )
                     }
                   </td>
+
+                  {/*Use Case 2 - treatments*/}
+                  <td class="icon">
+                    <md-filled-icon-button onClick={() => {
+                      this.activeIllness = i
+                      this.showOverlay = true
+                    }}>
+                      <md-icon>{(i.treatments?.length > 0) ? 'edit_note' : 'playlist_add'}</md-icon>
+                    </md-filled-icon-button>
+                  </td>
+
                   <td class='icon'>
-                    <md-filled-icon-button class='button' onClick= {this.deleteIllness(i.id)}>
+                    <md-filled-icon-button class='delete-illness' onClick={this.deleteIllness(i.id)}>
                       <md-icon>delete</md-icon>
                     </md-filled-icon-button>
                   </td>
@@ -222,14 +241,28 @@ export class RandomPatient {
               <input type='date' id='sl-until' required ref={e => this.untilInput = e}></input>
 
               <div>
-                <md-outlined-button>Submit</md-outlined-button>
+                <md-outlined-button class='add_illness'>Vytvoriť</md-outlined-button>
                 <md-outlined-button type='reset' onClick={() => this.toggleAdd()}>Zrušiť</md-outlined-button>
               </div>
             </form> :
-            <md-filled-icon-button onClick={() => this.toggleAdd()}>
+            <md-filled-icon-button class='show_form' onClick={() => this.toggleAdd()}>
               <md-icon>add</md-icon>
             </md-filled-icon-button>
         }
+
+        {/*Use Case 2 - treatments*/}
+        {
+          this.showOverlay && this.activeIllness &&
+          <treatment-overlay
+            patientId={this.patient?.id}
+            illness={this.activeIllness}
+            onCloseOverlay={() => {
+              this.showOverlay = false;
+              this.activeIllness = null;
+            }}>
+          </treatment-overlay>
+        }
+
       </Host>
     );
   }

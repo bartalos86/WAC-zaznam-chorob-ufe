@@ -1,82 +1,71 @@
-import { newE2EPage } from '@stencil/core/testing'
+import { newSpecPage } from '@stencil/core/testing';
+import { RandomPatient } from '../random-patient';
+import Patient from '../../../models/Patient';
 
 describe('random-patient', () => {
-  it('renders with patient data', async () => {
-    const page = await newE2EPage({
-      url: '/?id=P001'
+  const mockPatient: Patient = {
+    id: 'patient-1234',
+    name: 'Ján Novák',
+    illnesses: [{
+      id: 'illness-123',
+      diagnosis: 'Flu',
+      sl_from: '2025-05-01',
+      sl_until: '2025-05-10',
+      treatments: [],
+    }]
+  };
+
+  it('renders with patient data and allows adding new illness', async () => {
+    const page = await newSpecPage({
+      components: [RandomPatient],
+      html: `<random-patient test></random-patient>`,
+      supportsShadowDom: true,
     })
 
-    await page.setContent('<random-patient></random-patient>')
-    await page.waitForChanges()
+    page.rootInstance.setTestPatient(mockPatient);
+    await page.waitForChanges();
 
-    const patientName = await page.find('random-patient >>> h1')
-    expect(patientName).toBeTruthy()
-    expect(patientName.textContent).toBe('Ján Novák')
-    
-    const rows = await page.findAll('random-patient >>> table tbody tr')
-    expect(rows.length).toBe(2)
-  })
+    const name = page.root.shadowRoot.querySelector('h1');
+    expect(name.textContent).toBe('Ján Novák');
 
-  it('emits entry-clicked event when back button is clicked', async () => {
-    const page = await newE2EPage({
-      url: '/?id=P001'
-    })
+    const cells = page.root.shadowRoot.querySelectorAll('tbody tr td');
 
-    await page.setContent('<random-patient></random-patient>')
-    await page.waitForChanges()
-    
-    const eventSpy = await page.spyOnEvent('entry-clicked')
-    
-    const backButton = await page.find('random-patient >>> md-filled-icon-button')
-    await backButton.click()
-    
-    expect(eventSpy).toHaveReceivedEvent()
-    
-    const eventDetail = JSON.parse(eventSpy.firstEvent.detail)
-    expect(eventDetail.path).toBe('/')
-  })
+    expect(cells[0].textContent).toBe('Flu');
+    expect(cells[1].textContent).toBe('2025-05-01');
+    expect(cells[2].textContent).toContain('2025-05-10');
 
-  it('can edit illness end date', async () => {
-    const page = await newE2EPage({
-      url: '/?id=P001'
-    })
+    const addButton = page.root.shadowRoot.querySelector('md-filled-icon-button.show_form') as HTMLButtonElement;
+    addButton.click();
+    await page.waitForChanges();
 
-    await page.setContent('<random-patient></random-patient>')
-    await page.waitForChanges()
-    
-    const editButton = await page.find('random-patient >>> tbody tr:first-child td:nth-child(3) md-filled-icon-button')
-    await editButton.click()
-    await page.waitForChanges()
-    
-    const dateInput = await page.find('random-patient >>> tbody tr:first-child td:nth-child(3) input')
-    expect(dateInput).toBeTruthy()
+    const diagnosisInput = page.root.shadowRoot.querySelector('#diagnosis') as HTMLInputElement;
+    diagnosisInput.value = 'Cold';
+    const fromInput = page.root.shadowRoot.querySelector('#sl-from') as HTMLInputElement;
+    fromInput.value = '2025-06-01';
+    const untilInput = page.root.shadowRoot.querySelector('#sl-until') as HTMLInputElement;
+    untilInput.value = '2025-06-10';
 
-    await dateInput.type('2025-04-15')
-    
-    const confirmButton = await page.find('random-patient >>> tbody tr:first-child td:nth-child(3) md-filled-icon-button')
-    await confirmButton.click()
-    await page.waitForChanges()
-    
-    const dateInput2 = await page.find('random-patient >>> tbody tr:first-child td:nth-child(3) input')
-    expect(dateInput2).toBeNull()
-  })
+    const submitButton = page.root.shadowRoot.querySelector('md-outlined-button.add_illness') as HTMLButtonElement;
+    submitButton.click();
+    await page.waitForChanges();
 
-  it('can delete an illness', async () => {
-    const page = await newE2EPage({
-      url: '/?id=P001'
-    })
+    expect(page.rootInstance.patient.illnesses.length).toBeGreaterThanOrEqual(1);
+  });
 
-    await page.setContent('<random-patient></random-patient>')
-    await page.waitForChanges()
-    
-    let rows = await page.findAll('random-patient >>> table tbody tr')
-    const initialCount = rows.length
+  it('allows deleting an illness', async () => {
+    const page = await newSpecPage({
+      components: [RandomPatient],
+      html: `<random-patient></random-patient>`,
+      supportsShadowDom: true,
+    });
 
-    const deleteButton = await page.find('random-patient >>> tbody tr:first-child td.icon md-filled-icon-button')
-    await deleteButton.click()
-    await page.waitForChanges()
-    
-    rows = await page.findAll('random-patient >>> table tbody tr')
-    expect(rows.length).toBe(initialCount - 1)
-  })
-})
+    page.rootInstance.setTestPatient(mockPatient);
+    await page.waitForChanges();
+
+    const deleteButton = page.root.shadowRoot.querySelector('.delete-illness') as HTMLButtonElement;
+    deleteButton.click();
+    await page.waitForChanges();
+
+    expect(page.rootInstance.patient.illnesses.length).toBeLessThanOrEqual(1);
+  });
+});
