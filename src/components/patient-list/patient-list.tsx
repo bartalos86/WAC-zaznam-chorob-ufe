@@ -1,6 +1,6 @@
 import { Component, h, Host, State, Event, EventEmitter, Prop } from '@stencil/core';
 import AXIOS_INSTANCE from '../../api/axios_instance';
-import Patient from '../../models/Patient';
+import {Patient} from '../../models/Patient';
 
 
 @Component({

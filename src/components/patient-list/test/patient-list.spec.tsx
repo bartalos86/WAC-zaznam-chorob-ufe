@@ -1,11 +1,11 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { PatientList } from '../patient-list';
-import Patient from '../../../models/Patient';
+import {Patient} from '../../../models/Patient';
 
 describe('patient-list', () => {
   const mockPatients: Patient[] = [
-    { id: 'P001', name: 'Jana Nováková', illnesses: [] },
-    { id: 'P002', name: 'Anna Horváthová', illnesses: [] }
+    { id: 'P001', name: 'Jana Nováková', illnesses: [], medications: [] },
+    { id: 'P002', name: 'Anna Horváthová', illnesses: [], medications: [] }
   ];
 
   it('renders with patient data', async () => {

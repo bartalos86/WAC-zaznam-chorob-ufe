@@ -1,5 +1,6 @@
 :host {
   display: block;
+  padding: 1em;
 }
 
 
@@ -40,6 +41,19 @@ form {
 
 .date-edit {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  justify-content: flex-end;
+  gap: 0.5em;
+}
+
+/* Medication management styling */
+.medication-management {
+  margin: 20px 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.medication-management md-outlined-button {
+  --md-outlined-button-container-color: #f0f7ff;
+  --md-outlined-button-outline-color: #3498db;
+  --md-outlined-button-label-text-color: #2980b9;
 }

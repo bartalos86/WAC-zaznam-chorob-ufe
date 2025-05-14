@@ -4,6 +4,7 @@
     "allowUnreachableCode": false,
     "declaration": false,
     "experimentalDecorators": true,
+     "typeRoots": ["./src/models", "node_modules/@types"],
     "lib": [
       "dom",
       "es2017"

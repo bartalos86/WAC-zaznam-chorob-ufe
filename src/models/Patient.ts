@@ -1,10 +1,12 @@
 import type { Illness } from './Illness';
+import type { Medication } from './Medication';
 
-type Patient = {
+export type Patient = {
     id: string,
     name: string,
-    illnesses: Illness[] | null
+    illnesses: Illness[] | null,
+    medications: Medication[] | null
 }
 
 
-export default Patient
+//export default Patient

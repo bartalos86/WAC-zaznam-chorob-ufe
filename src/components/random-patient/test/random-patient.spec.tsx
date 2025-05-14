@@ -1,6 +1,6 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { RandomPatient } from '../random-patient';
-import Patient from '../../../models/Patient';
+import {Patient} from '../../../models/Patient';
 
 describe('random-patient', () => {
   const mockPatient: Patient = {
@@ -12,6 +12,11 @@ describe('random-patient', () => {
       sl_from: '2025-05-01',
       sl_until: '2025-05-10',
       treatments: [],
+    }],
+    medications: [{
+      id: 'medication-001',
+      name: 'Aspirin',
+      sideEffects: 'Nausea, stomach pain'
     }]
   };
 

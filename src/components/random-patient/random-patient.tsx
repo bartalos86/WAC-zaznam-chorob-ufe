@@ -1,5 +1,5 @@
 import { Component, Host, h, Event, EventEmitter, State } from '@stencil/core';
-import Patient from '../../models/Patient';
+import {Patient} from '../../models/Patient';
 import AXIOS_INSTANCE from '../../api/axios_instance';
 import type { Illness } from '../../models/Illness';
 
@@ -20,6 +20,8 @@ export class RandomPatient {
   // Use-Case 2 - treatments
   @State() showOverlay = false;
   @State() activeIllness: Illness = null;
+  // Medication overlay
+  @State() showMedicationOverlay = false;
 
   private diagnosisInput: HTMLInputElement
   private fromInput: HTMLInputElement
@@ -150,6 +152,11 @@ export class RandomPatient {
     }
   }
 
+  // Toggle the medication overlay
+  toggleMedicationOverlay() {
+    this.showMedicationOverlay = !this.showMedicationOverlay;
+  }
+
   render() {
     function getEventDetail() {
       return JSON.stringify({
@@ -163,6 +170,14 @@ export class RandomPatient {
           <md-icon>arrow_back</md-icon>
         </md-filled-icon-button>
         <h1>{this.patient?.name}</h1>
+
+
+        <div class="medication-management">
+          <md-outlined-button onClick={() => this.toggleMedicationOverlay()}>
+            <md-icon slot="icon">medication</md-icon>
+            Lieky pacienta
+          </md-outlined-button>
+        </div>
 
         <table>
           <thead>
@@ -261,6 +276,18 @@ export class RandomPatient {
               this.activeIllness = null;
             }}>
           </treatment-overlay>
+        }
+
+        {/* Medication overlay */}
+        {
+          this.showMedicationOverlay && this.patient &&
+          <medication-overlay
+            patientId={this.patient?.id}
+            patient={this.patient}
+            onCloseOverlay={() => {
+              this.showMedicationOverlay = false;
+            }}>
+          </medication-overlay>
         }
 
       </Host>
