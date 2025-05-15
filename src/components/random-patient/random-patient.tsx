@@ -109,12 +109,16 @@ export class RandomPatient {
       console.error(e)
     }
 
-    this.patient = {
-      ...this.patient,
-      illnesses: [
-        ...this.patient.illnesses,
-        illness
-      ]
+    if ( !Array.isArray(this.patient.illnesses) ) {
+      this.patient.illnesses = [illness]
+    } else {
+      this.patient = {
+        ...this.patient,
+        illnesses: [
+          ...this.patient.illnesses,
+          illness
+        ]
+      }
     }
 
     this.toggleAdd()
