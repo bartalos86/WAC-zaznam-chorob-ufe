@@ -1,5 +1,6 @@
 import { Component, h, Host, State, Event, EventEmitter, Prop } from '@stencil/core';
 import AXIOS_INSTANCE from '../../api/axios_instance';
+import { fakePatients } from '../../constants/patients';
 import {Patient} from '../../models/Patient';
 
 
@@ -35,6 +36,8 @@ export class PatientList {
     } catch (e: unknown) {
         console.log(`Unfortunate`)
         console.error(e)
+        console.log(`Populating with fake data (reason: Azure frontend instance)`)
+        this.patients = fakePatients
     }
   }
 

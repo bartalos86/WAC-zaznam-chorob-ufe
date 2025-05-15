@@ -2,6 +2,7 @@ import { Component, Host, h, Event, EventEmitter, State } from '@stencil/core';
 import {Patient} from '../../models/Patient';
 import AXIOS_INSTANCE from '../../api/axios_instance';
 import type { Illness } from '../../models/Illness';
+import { fakePatients } from '../../constants/patients';
 
 @Component({
   tag: 'random-patient',
@@ -58,7 +59,19 @@ export class RandomPatient {
     } catch (e: unknown) {
       console.log('unfortunate again')
       console.error(e)
+      this.tryToGetFakePatient(patientName)
     }
+  }
+
+  tryToGetFakePatient(name: string) {
+      console.log(`Searching through fake data (reason: Azure frontend instance)`);
+      const patients = fakePatients;
+      patients.forEach(patient => {
+        if (patient.name === name) {
+          this.patient = patient;
+          return;
+        }
+      });
   }
 
   toggleAdd() {
@@ -129,7 +142,8 @@ export class RandomPatient {
     } catch (e: unknown) {
       console.log('Quite unfortunate indeed')
       console.error(e)
-      return
+      // Removed return because of fake functionality for Azure
+      // return
     }
 
     illness.sl_until = date
@@ -143,7 +157,8 @@ export class RandomPatient {
       } catch (e: unknown) {
         console.log('Quite unfortunate indeed')
         console.error(e)
-        return
+        // Removed return because of fake functionality for Azure
+        // return
       }
       this.patient = {
         ...this.patient,

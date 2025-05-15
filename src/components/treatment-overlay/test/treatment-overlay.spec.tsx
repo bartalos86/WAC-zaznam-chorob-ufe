@@ -12,8 +12,8 @@ describe('treatment-overlay', () => {
       id: '1234-1234',
       name: 'TestTreatment',
       description: 'Lorem Ipsum',
-      start: '2025-05-01',
-      end: '2025-05-02'
+      startDate: '2025-05-01',
+      endDate: '2025-05-02'
     }],
   };
 

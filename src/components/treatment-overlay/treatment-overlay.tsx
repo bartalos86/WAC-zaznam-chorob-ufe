@@ -2,6 +2,7 @@ import { Component, Prop, h, State, Event, EventEmitter } from '@stencil/core';
 import AXIOS_INSTANCE from '../../api/axios_instance';
 import type { Illness } from '../../models/Illness';
 import type { Treatment } from '../../models/Treatment';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   tag: 'treatment-overlay',
@@ -81,8 +82,8 @@ export class TreatmentOverlay {
     const newTreatment = {
       name: this.treatmentNameInput.value,
       description: this.treatmentDescriptionInput.value,
-      start: this.treatmentStartInput.value,
-      end: this.treatmentEndInput.value,
+      startDate: this.treatmentStartInput.value,
+      endDate: this.treatmentEndInput.value,
       id: null,
     };
     try {
@@ -96,16 +97,23 @@ export class TreatmentOverlay {
         newTreatment
       );
       newTreatment.id = response.data.treatment.id;
-      // Add new treatment
-      if (newTreatment.description) {
-        this.illness.treatments = [...(this.illness.treatments || []), newTreatment];
-      }
-      // Clear the fields
-      this.resetInputFields();
-      this._updateTrigger++;
+      // // Add new treatment
+      // if (newTreatment.description) {
+      //   this.illness.treatments = [...(this.illness.treatments || []), newTreatment];
+      // }
+      // // Clear the fields
+      // this.resetInputFields();
+      // this._updateTrigger++;
     } catch (e) {
       console.error(e);
+      newTreatment.id = uuidv4();
     }
+    // Migrated to here because of FE fake functionality for Azure deployment
+    if (newTreatment.description) {
+      this.illness.treatments = [...(this.illness.treatments || []), newTreatment];
+    }
+    this.resetInputFields();
+    this._updateTrigger++;
   }
 
   private handleEdit = async (treatmentId: string) => {
@@ -113,8 +121,8 @@ export class TreatmentOverlay {
       id: treatmentId,
       name: this.treatmentNameInput.value,
       description: this.treatmentDescriptionInput.value,
-      start: this.treatmentStartInput.value,
-      end: this.treatmentEndInput.value,
+      startDate: this.treatmentStartInput.value,
+      endDate: this.treatmentEndInput.value,
     };
     // Update the existing treatment
     try {
@@ -122,14 +130,20 @@ export class TreatmentOverlay {
         `patients/${this.patientId}/illnesses/${this.illness.id}/treatments/${treatmentId}`,
         updatedTreatment
       );
-      this.illness.treatments = this.illness.treatments.map(treatment =>
-        treatment.id === treatmentId ? updatedTreatment : treatment
-      );
-      this.resetInputFields();
-      this._updateTrigger++;
+      // this.illness.treatments = this.illness.treatments.map(treatment =>
+      //   treatment.id === treatmentId ? updatedTreatment : treatment
+      // );
+      // this.resetInputFields();
+      // this._updateTrigger++;
     } catch (e) {
       console.error(e);
     }
+    // Migrated to here because of FE fake functionality for Azure deployment
+    this.illness.treatments = this.illness.treatments.map(treatment =>
+      treatment.id === treatmentId ? updatedTreatment : treatment
+    );
+    this.resetInputFields();
+    this._updateTrigger++;
   }
 
   private handleDelete = async (treatmentId: string) => {
@@ -138,11 +152,14 @@ export class TreatmentOverlay {
       await AXIOS_INSTANCE.delete(
         `patients/${this.patientId}/illnesses/${this.illness.id}/treatments/${treatmentId}`
       );
-      this.illness.treatments = this.illness.treatments.filter(treatment => treatment.id !== treatmentId);
-      this._updateTrigger++;
+      // this.illness.treatments = this.illness.treatments.filter(treatment => treatment.id !== treatmentId);
+      // this._updateTrigger++;
     } catch (e) {
       console.error(e);
     }
+    // Migrated to here because of FE fake functionality for Azure deployment
+    this.illness.treatments = this.illness.treatments.filter(treatment => treatment.id !== treatmentId);
+    this._updateTrigger++;
   }
 
   render() {
@@ -158,7 +175,7 @@ export class TreatmentOverlay {
                 <div class="treatment-item">
                   <div class="treatment-details">
                     <span class="description-button" title={'Popis liečby: ' + t.description}>📃</span>
-                    <strong>{t.name}</strong> 🟢{t.start}🔴{t.end}
+                    <strong>{t.name}</strong> 🟢{t.startDate}🔴{t.endDate}
                   </div>
                   <div class="treatment-actions">
                     <button class="delete" onClick={() => this.handleDelete(t.id)}>
@@ -168,8 +185,8 @@ export class TreatmentOverlay {
                       this.treatmentIdInput.value = t.id;
                       this.treatmentNameInput.value = t.name;
                       this.treatmentDescriptionInput.value = t.description;
-                      this.treatmentStartInput.value = t.start;
-                      this.treatmentEndInput.value = t.end;
+                      this.treatmentStartInput.value = t.startDate;
+                      this.treatmentEndInput.value = t.endDate;
                       this.clearValidationMessages();
                       this.handleButtonText();
                     }}>
