@@ -1,8 +1,8 @@
 import { Component, Prop, h, State, Event, EventEmitter } from '@stencil/core';
-import AXIOS_INSTANCE from '../../api/axios_instance';
 import type { Illness } from '../../models/Illness';
 import type { Treatment } from '../../models/Treatment';
 import { v4 as uuidv4 } from 'uuid';
+import { axiosStore } from '../../api/axios_instance/axiosStore';
 
 @Component({
   tag: 'treatment-overlay',
@@ -29,6 +29,8 @@ export class TreatmentOverlay {
   @State() endValidation: string = 'Koniec liečby nesmie byť nešpecifikovaný!';
 
   async componentWillLoad() {
+    const api = axiosStore.getAxiosInstance();
+
     if (!this.illness?.id) {
       console.warn('Illness not defined, skipping treatment fetch.');
       return;
@@ -39,7 +41,7 @@ export class TreatmentOverlay {
         treatments: Treatment[],
         status: string,
       }
-      const response = await AXIOS_INSTANCE.get<data>('patients/' + this.patientId + '/illnesses/' + this.illness.id + '/treatments');
+      const response = await api.get<data>('patients/' + this.patientId + '/illnesses/' + this.illness.id + '/treatments');
       console.log(response);
       this.illness.treatments = response.data.treatments;
     } catch (e) {
@@ -86,13 +88,15 @@ export class TreatmentOverlay {
       endDate: this.treatmentEndInput.value,
       id: null,
     };
+    const api = axiosStore.getAxiosInstance();
+
     try {
       type data = {
         message: string,
         treatment: Treatment,
         status: string,
       }
-      const response = await AXIOS_INSTANCE.post<data>(
+      const response = await api.post<data>(
         `patients/${this.patientId}/illnesses/${this.illness.id}/treatments`,
         newTreatment
       );
@@ -125,8 +129,10 @@ export class TreatmentOverlay {
       endDate: this.treatmentEndInput.value,
     };
     // Update the existing treatment
+    const api = axiosStore.getAxiosInstance();
+
     try {
-      await AXIOS_INSTANCE.patch<Treatment>(
+      await api.patch<Treatment>(
         `patients/${this.patientId}/illnesses/${this.illness.id}/treatments/${treatmentId}`,
         updatedTreatment
       );
@@ -148,8 +154,10 @@ export class TreatmentOverlay {
 
   private handleDelete = async (treatmentId: string) => {
     // Delete treatment
+    const api = axiosStore.getAxiosInstance();
+
     try {
-      await AXIOS_INSTANCE.delete(
+      await api.delete(
         `patients/${this.patientId}/illnesses/${this.illness.id}/treatments/${treatmentId}`
       );
       // this.illness.treatments = this.illness.treatments.filter(treatment => treatment.id !== treatmentId);
@@ -157,7 +165,6 @@ export class TreatmentOverlay {
     } catch (e) {
       console.error(e);
     }
-    // Migrated to here because of FE fake functionality for Azure deployment
     this.illness.treatments = this.illness.treatments.filter(treatment => treatment.id !== treatmentId);
     this._updateTrigger++;
   }

@@ -1,8 +1,8 @@
 import { Component, Host, h, Event, EventEmitter, State } from '@stencil/core';
 import {Patient} from '../../models/Patient';
-import AXIOS_INSTANCE from '../../api/axios_instance';
 import type { Illness } from '../../models/Illness';
 import { fakePatients } from '../../constants/patients';
+import { axiosStore } from '../../api/axios_instance/axiosStore';
 
 @Component({
   tag: 'random-patient',
@@ -42,6 +42,7 @@ export class RandomPatient {
       return
     }
     // fetch the damn user
+    const api = axiosStore.getAxiosInstance();
 
     try {
       type data = {
@@ -50,7 +51,7 @@ export class RandomPatient {
         status: string
       }
 
-      const response = await AXIOS_INSTANCE.get<data>(`/patients?name=${patientName}`)
+      const response = await api.get<data>(`/patients?name=${patientName}`)
       if (response.data.patients.length != 1) {
         console.log('Unfortunate')
         return
@@ -95,9 +96,10 @@ export class RandomPatient {
       sl_until: this.untilInput.value,
       id: null
     }
+    const api = axiosStore.getAxiosInstance();
 
     try {
-      const response = await AXIOS_INSTANCE.post<Illness>(`/patients/${this.patient.id}/illnesses`, {
+      const response = await api.post<Illness>(`/patients/${this.patient.id}/illnesses`, {
         diagnosis: illness.diagnosis,
         sl_from: illness.sl_from,
         sl_until: illness.sl_until
@@ -137,9 +139,10 @@ export class RandomPatient {
       this.toggleEdit()
       return
     }
+    const api = axiosStore.getAxiosInstance();
 
     try {
-      await AXIOS_INSTANCE.patch(`/patients/${this.patient.id}/illnesses`, {
+      await api.patch(`/patients/${this.patient.id}/illnesses`, {
         illness_id: id,
         sl_until: date
       })
@@ -157,7 +160,9 @@ export class RandomPatient {
   deleteIllness(id: string) {
     return async () => {
       try {
-        await AXIOS_INSTANCE.delete(`/patients/${this.patient.id}/illnesses?illness_id=${id}`)
+        const api = axiosStore.getAxiosInstance();
+
+        await api.delete(`/patients/${this.patient.id}/illnesses?illness_id=${id}`)
       } catch (e: unknown) {
         console.log('Quite unfortunate indeed')
         console.error(e)

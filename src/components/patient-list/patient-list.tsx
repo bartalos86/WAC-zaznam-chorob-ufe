@@ -1,7 +1,7 @@
 import { Component, h, Host, State, Event, EventEmitter, Prop } from '@stencil/core';
-import AXIOS_INSTANCE from '../../api/axios_instance';
 import { fakePatients } from '../../constants/patients';
 import {Patient} from '../../models/Patient';
+import { axiosStore } from '../../api/axios_instance/axiosStore';
 
 
 @Component({
@@ -24,13 +24,15 @@ export class PatientList {
   }
 
   async componentWillLoad() {
+    const api = axiosStore.getAxiosInstance();
+
     try {
       type data = {
         message: string,
         patients: Patient[],
         status: string
       }
-      const response = await AXIOS_INSTANCE.get<data>('/patients')
+      const response = await api.get<data>('/patients')
 
       this.patients = response.data.patients
     } catch (e: unknown) {
@@ -47,6 +49,7 @@ export class PatientList {
 
   async addPatient(e: Event) {
     const name = ((e.target as HTMLFormElement).querySelector(`#name`) as HTMLInputElement).value
+    const api = axiosStore.getAxiosInstance();
 
     try {
       type data = {
@@ -54,7 +57,7 @@ export class PatientList {
         patient: Patient,
         status: string
       }
-      const response = await AXIOS_INSTANCE.post<data>(`/patients`, {
+      const response = await api.post<data>(`/patients`, {
         name
       })
 
@@ -69,8 +72,10 @@ export class PatientList {
   }
 
   async deletePatient(name: string) {
+    const api = axiosStore.getAxiosInstance();
+
     try {
-      await AXIOS_INSTANCE.delete(`/patients?name=${name}`)
+      await api.delete(`/patients?name=${name}`)
 
       this.patients = this.patients.filter(p => p.name != name)
     } catch(e: unknown) {

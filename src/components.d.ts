@@ -10,11 +10,6 @@ import { Illness } from "./models/Illness";
 export { Patient } from "./models/Patient";
 export { Illness } from "./models/Illness";
 export namespace Components {
-    interface Cv1ZaznamChorobApp {
-        "ambulanceId": string;
-        "apiBase": string;
-        "basePath": string;
-    }
     interface MedicationOverlay {
         "patient": Patient;
         "patientId": string;
@@ -49,12 +44,6 @@ export interface TreatmentOverlayCustomEvent<T> extends CustomEvent<T> {
     target: HTMLTreatmentOverlayElement;
 }
 declare global {
-    interface HTMLCv1ZaznamChorobAppElement extends Components.Cv1ZaznamChorobApp, HTMLStencilElement {
-    }
-    var HTMLCv1ZaznamChorobAppElement: {
-        prototype: HTMLCv1ZaznamChorobAppElement;
-        new (): HTMLCv1ZaznamChorobAppElement;
-    };
     interface HTMLMedicationOverlayElementEventMap {
         "closeOverlay": void;
     }
@@ -130,7 +119,6 @@ declare global {
         new (): HTMLTreatmentOverlayElement;
     };
     interface HTMLElementTagNameMap {
-        "cv1-zaznam-chorob-app": HTMLCv1ZaznamChorobAppElement;
         "medication-overlay": HTMLMedicationOverlayElement;
         "patient-app": HTMLPatientAppElement;
         "patient-list": HTMLPatientListElement;
@@ -139,11 +127,6 @@ declare global {
     }
 }
 declare namespace LocalJSX {
-    interface Cv1ZaznamChorobApp {
-        "ambulanceId"?: string;
-        "apiBase"?: string;
-        "basePath"?: string;
-    }
     interface MedicationOverlay {
         "onCloseOverlay"?: (event: MedicationOverlayCustomEvent<void>) => void;
         "patient"?: Patient;
@@ -165,7 +148,6 @@ declare namespace LocalJSX {
         "patientId"?: string;
     }
     interface IntrinsicElements {
-        "cv1-zaznam-chorob-app": Cv1ZaznamChorobApp;
         "medication-overlay": MedicationOverlay;
         "patient-app": PatientApp;
         "patient-list": PatientList;
@@ -177,7 +159,6 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "cv1-zaznam-chorob-app": LocalJSX.Cv1ZaznamChorobApp & JSXBase.HTMLAttributes<HTMLCv1ZaznamChorobAppElement>;
             "medication-overlay": LocalJSX.MedicationOverlay & JSXBase.HTMLAttributes<HTMLMedicationOverlayElement>;
             "patient-app": LocalJSX.PatientApp & JSXBase.HTMLAttributes<HTMLPatientAppElement>;
             "patient-list": LocalJSX.PatientList & JSXBase.HTMLAttributes<HTMLPatientListElement>;

@@ -1,4 +1,5 @@
 import { Component, Host, Prop, State, h } from '@stencil/core';
+import { axiosStore } from '../../api/axios_instance/axiosStore';
 
 declare global {
   interface Window { navigation: any; }
@@ -40,6 +41,8 @@ export class PatientApp {
       let path = new URL((ev as any).destination.url).pathname;
       toRelative(path);
     });
+
+    axiosStore.setBaseURL(this.apiBase);
 
     toRelative(location.pathname)
   }

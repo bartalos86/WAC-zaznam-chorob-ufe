@@ -1,8 +1,8 @@
 import { Component, Prop, h, State, Event, EventEmitter } from '@stencil/core';
-import AXIOS_INSTANCE from '../../api/axios_instance';
 import type { Medication } from '../../models/Medication';
 import type { Patient } from '../../models/Patient';
 import { v4 as uuidv4 } from 'uuid';
+import { axiosStore } from '../../api/axios_instance/axiosStore';
 
 @Component({
   tag: 'medication-overlay',
@@ -26,12 +26,14 @@ export class MedicationOverlay {
   @State() sideEffectsValidation: string = 'Vedľajšie účinky musia byť špecifikované!';
 
   async componentWillLoad() {
+    const api = axiosStore.getAxiosInstance();
+
     if (!this.patient?.id) {
       console.warn('Patient not defined, skipping medications fetch.');
       return;
     }
     try {
-      const response = await AXIOS_INSTANCE.get(`patients/${this.patientId}/medications`);
+      const response = await api.get(`patients/${this.patientId}/medications`);
       this.patient.medications = response.data;
     } catch (e) {
       console.error(e);
@@ -67,8 +69,10 @@ export class MedicationOverlay {
       sideEffects: this.medicationSideEffectsInput.value,
     };
 
+    const api = axiosStore.getAxiosInstance();
+
     try {
-      const response = await AXIOS_INSTANCE.post(
+      const response = await api.post(
         `patients/${this.patientId}/medications`,
         newMedication
       );
@@ -102,9 +106,12 @@ export class MedicationOverlay {
       sideEffects: this.medicationSideEffectsInput.value,
     };
 
+    const api = axiosStore.getAxiosInstance();
+
+
     // Update the existing medication
     try {
-      await AXIOS_INSTANCE.patch(
+      await api.patch(
         `patients/${this.patientId}/medications/${medicationId}`,
         updatedMedication
       );
@@ -128,15 +135,14 @@ export class MedicationOverlay {
   }
 
   private handleDelete = async (medicationId: string) => {
-    // Delete medication
+    const api = axiosStore.getAxiosInstance();
+
     try {
-      await AXIOS_INSTANCE.delete(
+      await api.delete(
         `patients/${this.patientId}/medications?medication_id=${medicationId}`
       );
 
-      // // Remove medication from the list
-      // this.patient.medications = this.patient.medications.filter(medication => medication.id !== medicationId);
-      // this._updateTrigger++;
+
     } catch (e) {
       console.error(e);
     }
