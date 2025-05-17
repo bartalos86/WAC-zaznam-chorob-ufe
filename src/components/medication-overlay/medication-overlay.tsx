@@ -1,7 +1,8 @@
 import { Component, Prop, h, State, Event, EventEmitter } from '@stencil/core';
 import AXIOS_INSTANCE from '../../api/axios_instance';
-import type {Medication} from '../../models/Medication';
-import type {Patient} from '../../models/Patient';
+import type { Medication } from '../../models/Medication';
+import type { Patient } from '../../models/Patient';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   tag: 'medication-overlay',
@@ -31,7 +32,6 @@ export class MedicationOverlay {
     }
     try {
       const response = await AXIOS_INSTANCE.get(`patients/${this.patientId}/medications`);
-      console.log(response);
       this.patient.medications = response.data;
     } catch (e) {
       console.error(e);
@@ -84,6 +84,14 @@ export class MedicationOverlay {
       this._updateTrigger++;
     } catch (e) {
       console.error(e);
+      // Added here because of FE fake functionality for Azure deployment
+      const response = { data: { id: uuidv4(), name: newMedication.name, sideEffects: newMedication.sideEffects } };
+      if (this.patient.medications === null) {
+        this.patient.medications = [];
+      }
+      this.patient.medications = [...this.patient.medications, response.data];
+      this.resetInputFields();
+      this._updateTrigger++;
     }
   }
 
@@ -101,16 +109,22 @@ export class MedicationOverlay {
         updatedMedication
       );
 
-      // Update medication in the list
-      this.patient.medications = this.patient.medications.map(medication =>
-        medication.id === medicationId ? updatedMedication : medication
-      );
+      // // Update medication in the list
+      // this.patient.medications = this.patient.medications.map(medication =>
+      //   medication.id === medicationId ? updatedMedication : medication
+      // );
 
-      this.resetInputFields();
-      this._updateTrigger++;
+      // this.resetInputFields();
+      // this._updateTrigger++;
     } catch (e) {
       console.error(e);
     }
+    // Migrated to here because of FE fake functionality for Azure deployment
+    this.patient.medications = this.patient.medications.map(medication =>
+      medication.id === medicationId ? updatedMedication : medication
+    );
+    this.resetInputFields();
+    this._updateTrigger++;
   }
 
   private handleDelete = async (medicationId: string) => {
@@ -120,12 +134,15 @@ export class MedicationOverlay {
         `patients/${this.patientId}/medications?medication_id=${medicationId}`
       );
 
-      // Remove medication from the list
-      this.patient.medications = this.patient.medications.filter(medication => medication.id !== medicationId);
-      this._updateTrigger++;
+      // // Remove medication from the list
+      // this.patient.medications = this.patient.medications.filter(medication => medication.id !== medicationId);
+      // this._updateTrigger++;
     } catch (e) {
       console.error(e);
     }
+    // Migrated to here because of FE fake functionality for Azure deployment
+    this.patient.medications = this.patient.medications.filter(medication => medication.id !== medicationId);
+    this._updateTrigger++;
   }
 
   render() {
