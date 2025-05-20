@@ -1,6 +1,9 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { PatientList } from '../patient-list';
 import {Patient} from '../../../models/Patient';
+import { axiosStore } from '../../../api/axios_instance/axiosStore';
+
+axiosStore.setBaseURL('http://localhost:8080/api');
 
 describe('patient-list', () => {
   const mockPatients: Patient[] = [

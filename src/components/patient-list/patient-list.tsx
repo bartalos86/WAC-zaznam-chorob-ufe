@@ -1,6 +1,7 @@
 import { Component, h, Host, State, Event, EventEmitter, Prop } from '@stencil/core';
 import { fakePatients } from '../../constants/patients';
 import {Patient} from '../../models/Patient';
+import { v4 as uuidv4 } from 'uuid';
 import { axiosStore } from '../../api/axios_instance/axiosStore';
 
 
@@ -68,7 +69,14 @@ export class PatientList {
     } catch (e: unknown) {
       console.log(`unfortunate`)
       console.log(e)
+      // Added here because of FE fake functionality for Azure deployment
+      const fakePatient: Patient = {id: uuidv4(), name: name, medications: [], illnesses: []}
+      this.patients = [
+        ...this.patients,
+        fakePatient
+      ]
     }
+    this.toggleAdd()
   }
 
   async deletePatient(name: string) {
@@ -77,11 +85,13 @@ export class PatientList {
     try {
       await api.delete(`/patients?name=${name}`)
 
-      this.patients = this.patients.filter(p => p.name != name)
+      // this.patients = this.patients.filter(p => p.name != name)
     } catch(e: unknown) {
       console.log('Damn son, back luck')
       console.log(e)
     }
+    // Migrated here because of FE fake functionality for Azure deployment
+    this.patients = this.patients.filter(p => p.name != name)
   }
 
   render() {

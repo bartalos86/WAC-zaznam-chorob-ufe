@@ -190,7 +190,7 @@ export class RandomPatient {
 
     return (
       <Host>
-        <md-filled-icon-button onClick={() => this.entryClicked.emit(getEventDetail())}>
+        <md-filled-icon-button onClick={() => window.history.back()}>
           <md-icon>arrow_back</md-icon>
         </md-filled-icon-button>
         <h1>{this.patient?.name}</h1>

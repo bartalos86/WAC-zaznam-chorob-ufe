@@ -58,7 +58,7 @@ export class TreatmentOverlay {
   }
 
   private resetInputFields = () => {
-    this.treatmentIdInput = null;
+    this.treatmentIdInput.value = null;
     this.treatmentNameInput.value = '';
     this.treatmentDescriptionInput.value = '';
     this.treatmentStartInput.value = '';

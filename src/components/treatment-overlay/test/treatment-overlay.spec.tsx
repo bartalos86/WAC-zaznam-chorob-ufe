@@ -1,6 +1,9 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { TreatmentOverlay } from '../treatment-overlay';
 import { Illness } from '../../../models/Illness';
+import { axiosStore } from '../../../api/axios_instance/axiosStore';
+
+axiosStore.setBaseURL('http://localhost:8080/api');
 
 describe('treatment-overlay', () => {
   const mockIllness: Illness = {
